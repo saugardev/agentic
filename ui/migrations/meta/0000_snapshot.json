@@ -1,5 +1,5 @@
 {
-  "id": "42741692-4805-49ea-9b4d-01846820ea69",
+  "id": "c66375bb-e1ad-4cc6-8d0e-f88ccf2124a6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -61,6 +61,43 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.levels": {
+      "name": "levels",
+      "schema": "",
+      "columns": {
+        "number": {
+          "name": "number",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "minimum_word_count": {
+          "name": "minimum_word_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "required_elements": {
+          "name": "required_elements",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.players": {
       "name": "players",
       "schema": "",
@@ -86,7 +123,8 @@
         },
         "status": {
           "name": "status",
-          "type": "text",
+          "type": "player_status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'alive'"
@@ -101,7 +139,17 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.player_status": {
+      "name": "player_status",
+      "schema": "public",
+      "values": [
+        "alive",
+        "dead",
+        "completed"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},
