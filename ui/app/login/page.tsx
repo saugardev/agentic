@@ -14,6 +14,7 @@ export default function Home() {
   };
 
   const sign = async (message: string) => {
+    console.log(message);
     const res = await fetch('/api/wallet/sign', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

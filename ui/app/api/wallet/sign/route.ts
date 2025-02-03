@@ -9,12 +9,17 @@ const privy = new PrivyClient(
 export async function POST(req: Request) {
   try {
     const { walletId, message } = await req.json();
-    const data = await privy.walletApi.ethereum.signMessage({
+
+    const signature = await privy.walletApi.rpc({
       walletId,
       method: 'personal_sign',
-      params: { message },
+      params: {
+        message
+      }
     });
-    return NextResponse.json({ signature: data.signature });
+    console.log(signature);
+
+    return NextResponse.json({ signature });
   } catch (error) {
     console.error('Failed to sign message:', error);
     return NextResponse.json({ error: 'Failed to sign message' }, { status: 500 });
