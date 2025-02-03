@@ -10,6 +10,14 @@ import type { Player } from '@/types';
  * @throws {Error} If database insert fails
  */
 export async function createPlayer(name: string): Promise<Player> {
+  const existingPlayer = await db.query.players.findFirst({
+    where: eq(players.name, name)
+  });
+
+  if (existingPlayer) {
+    return existingPlayer;
+  }
+
   const [player] = await db.insert(players)
     .values({ name })
     .returning();
