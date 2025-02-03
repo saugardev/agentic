@@ -13,11 +13,6 @@ export function validateNumber(number: number) {
 export async function validateAnswer(level: LevelType, answer: string): Promise<boolean> {
   assert(answer.trim(), 'Answer cannot be empty');
 
-  if (level.minimumWordCount) {
-    const wordCount = answer.trim().split(/\s+/).length;
-    assert(wordCount >= level.minimumWordCount, `Answer must contain at least ${level.minimumWordCount} words`);
-  }
-
   if (level.requiredElements?.length) {
     for (const element of level.requiredElements) {
       assert(

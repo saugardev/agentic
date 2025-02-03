@@ -1,19 +1,18 @@
 import { db } from '@/lib/db';
-import { players, levels, interactions } from '@/lib/db/schema';
+import { levels, interactions, games } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import type { Level as LevelType, GameResponse } from '@/types';
 import { createLevel, getLevel, getCurrentLevel } from './queries';
 import { validateDescription, validateAnswer } from './validations';
-import { getPlayer } from '../player/queries';
 
 export class Level {
   /**
    * Creates a new level with the given description
    * Validates the description format before creation
    */
-  async create(description: string): Promise<LevelType> {
+  async create(gameId: string, description: string): Promise<LevelType> {
     validateDescription(description);
-    return await createLevel(description);
+    return await createLevel(gameId, description);
   }
 
   /**
@@ -29,11 +28,11 @@ export class Level {
   }
 
   /**
-   * Gets the current level for a given player
+   * Gets the current level for a given game
    * Throws if either player or their current level doesn't exist
    */
-  async getCurrent(playerId: number): Promise<LevelType> {
-    return await getCurrentLevel(playerId);
+  async getCurrent(gameId: string): Promise<LevelType> {
+    return await getCurrentLevel(gameId);
   }
 
   /**
@@ -46,42 +45,44 @@ export class Level {
    * 
    * @returns GameResponse with pass/fail status and reason
    */
-  async submitAnswer(playerId: number, answer: string): Promise<GameResponse> {
-    const player = await getPlayer(playerId);
+  async submitAnswer(gameId: string, answer: string): Promise<GameResponse> {
+    const game = await db.query.games.findFirst({
+      where: eq(games.id, gameId)
+    });
 
-    if (!player) {
-      throw new Error('Player not found');
+    if (!game) {
+      throw new Error('Game not found');
     }
 
-    if (player.status === 'dead') {
+    if (game.status === 'dead') {
       return {
         passed: false,
         reason: 'Player is already dead. Cannot continue.'
       };
     }
 
-    const level = await this.get(player.currentLevel);
+    const level = await this.get(game.currentLevel);
     const passed = await validateAnswer(level, answer);
 
     // Record interaction
     await db.insert(interactions).values({
-      playerId,
-      levelNumber: player.currentLevel,
+      levelId: level.id,
       playerAnswer: answer,
       result: passed ? 'passed' : 'failed'
     });
 
-    // Update player status
+    // Update game status
     const newStatus = passed ? 
-      (player.currentLevel + 1 >= await this.getMaxLevel() ? 'completed' : 'alive') : 
+      (game.currentLevel + 1 >= await this.getMaxLevel() ? 'completed' : 'alive') : 
       'dead';
 
-    await db.update(players)
+    await db.update(games)
       .set({ 
         status: newStatus,
-        currentLevel: passed ? player.currentLevel + 1 : player.currentLevel 
+        currentLevel: passed ? game.currentLevel + 1 : game.currentLevel,
+        endedAt: newStatus !== 'alive' ? new Date() : undefined
       })
-      .where(eq(players.id, playerId));
+      .where(eq(games.id, gameId));
 
     return {
       passed,

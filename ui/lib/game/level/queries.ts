@@ -2,15 +2,16 @@ import { db } from '@/lib/db';
 import { levels } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import type { Level as LevelType } from '@/types';
-import { players } from '@/lib/db/schema';
+import { games } from '@/lib/db/schema';
 
 /**
  * Creates a new level in the database
+ * @param gameId - The game's ID
  * @param description - The level's description text
  * @returns Promise resolving to the created level
  * @throws {Error} If database insert fails
  */
-export async function createLevel(description: string): Promise<LevelType> {
+export async function createLevel(gameId: string, description: string): Promise<LevelType> {
   const [lastLevel] = await db
     .select({ number: levels.number })
     .from(levels)
@@ -22,6 +23,7 @@ export async function createLevel(description: string): Promise<LevelType> {
   const [level] = await db
     .insert(levels)
     .values({
+      gameId,
       number,
       description,
     })
@@ -45,19 +47,19 @@ export async function getLevel(number: number): Promise<LevelType | undefined> {
   return level;
 }
 
-export async function getCurrentLevel(playerId: number): Promise<LevelType> {
-  const player = await db.query.players.findFirst({
-    where: eq(players.id, playerId)
+export async function getCurrentLevel(gameId: string): Promise<LevelType> {
+  const game = await db.query.games.findFirst({
+    where: eq(games.id, gameId)
   });
 
-  if (!player) {
-    throw new Error('Player not found');
+  if (!game) {
+    throw new Error('Game not found');
   }
 
-  const level = await getLevel(player.currentLevel);
+  const level = await getLevel(game.currentLevel);
   
   if (!level) {
-    throw new Error(`Level ${player.currentLevel} not found`);
+    throw new Error(`Level ${game.currentLevel} not found`);
   }
 
   return level;

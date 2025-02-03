@@ -11,7 +11,7 @@ import type { Player } from '@/types';
  */
 export async function createPlayer(name: string): Promise<Player> {
   const [player] = await db.insert(players)
-    .values({ name, currentLevel: 0, status: 'alive' })
+    .values({ name })
     .returning();
   
   if (!player) {
@@ -22,11 +22,11 @@ export async function createPlayer(name: string): Promise<Player> {
 
 /**
  * Retrieves a player by their ID
- * @param id - The player's ID
+ * @param id - The player's UUID
  * @returns Promise resolving to the player
  * @throws {Error} If player not found
  */
-export async function getPlayer(id: number): Promise<Player> {
+export async function getPlayer(id: string): Promise<Player> {
   const player = await db.query.players.findFirst({
     where: eq(players.id, id)
   });

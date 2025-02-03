@@ -19,12 +19,12 @@ export class Player {
   }
 
   /**
-   * Retrieves a player by their ID
-   * @param id - The player's ID
+   * Retrieves a player by their UUID
+   * @param id - The player's UUID
    * @returns Promise resolving to the player
    * @throws {Error} If player with given ID doesn't exist
    */
-  async get(id: number): Promise<PlayerType> {
+  async get(id: string): Promise<PlayerType> {
     const player = await getPlayer(id);
     if (!player) {
       throw new Error(`Player with id ${id} not found`);

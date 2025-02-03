@@ -43,35 +43,35 @@ export class Game {
   }
 
   /**
-   * Retrieves a player by their ID
-   * @param id - The player's ID
+   * Retrieves a player by their UUID
+   * @param id - The player's UUID
    * @returns Promise resolving to the player
    * @throws {Error} If player not found
    */
-  async getPlayer(id: number): Promise<PlayerType> {
+  async getPlayer(id: string): Promise<PlayerType> {
     return await this.player.get(id);
   }
 
   /**
-   * Gets the current level for a player
-   * @param playerId - The player's ID
+   * Gets the current level
+   * @param gameId - The game's ID
    * @returns Promise resolving to the player's current level
    * @throws {Error} If player not found
    * @throws {Error} If level not found
    */
-  async getCurrentLevel(playerId: number): Promise<LevelType> {
-    return await this.level.getCurrent(playerId);
+  async getCurrentLevel(gameId: string): Promise<LevelType> {
+    return await this.level.getCurrent(gameId);
   }
 
   /**
    * Submits a player's answer for their current level
-   * @param playerId - The player's ID
+   * @param gameId - The game's ID
    * @param answer - The player's submitted answer
    * @returns Promise resolving to game response with pass/fail status
    * @throws {Error} If player not found
    * @throws {Error} If answer validation fails
    */
-  async submitAnswer(playerId: number, answer: string): Promise<GameResponse> {
-    return await this.level.submitAnswer(playerId, answer);
+  async submitAnswer(gameId: string, answer: string): Promise<GameResponse> {
+    return await this.level.submitAnswer(gameId, answer);
   }
 }
