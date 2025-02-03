@@ -20,6 +20,6 @@ export const interactions = pgTable('interactions', {
   id: serial('id').primaryKey(),
   playerId: integer('player_id').references(() => players.id).notNull(),
   levelNumber: integer('level_number').notNull(),
-  playerAnswer: text('player_answer'),
-  result: text('result')
+  playerAnswer: text('player_answer').notNull(),
+  result: text('result').notNull()
 });

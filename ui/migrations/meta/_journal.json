@@ -8,6 +8,13 @@
       "when": 1738582740799,
       "tag": "0000_easy_longshot",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1738582913224,
+      "tag": "0001_fuzzy_masque",
+      "breakpoints": true
     }
   ]
 }

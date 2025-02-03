@@ -14,6 +14,6 @@ export interface GameResponse {
 export interface LevelResponse {
   levelNumber: number;
   description: string;
-  status?: PlayerStatus;
-  message?: string;
+  status: PlayerStatus;
+  message: string;
 }
