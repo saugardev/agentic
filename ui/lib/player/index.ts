@@ -6,6 +6,12 @@ import { validateName } from './validations';
  * Manages player operations including creation and retrieval
  */
 export class Player {
+  private playerData: PlayerType;
+
+  constructor(playerData: PlayerType) {
+    this.playerData = playerData;
+  }
+
   /**
    * Creates a new player with the given name
    * @param name - The player's name
@@ -13,9 +19,10 @@ export class Player {
    * @throws {Error} If name validation fails
    * @throws {Error} If player creation fails
    */
-  async create(name: string): Promise<PlayerType> {
+  static async create(name: string): Promise<Player> {
     validateName(name);
-    return await createPlayer(name);
+    const playerData = await createPlayer(name);
+    return new Player(playerData);
   }
 
   /**
@@ -24,11 +31,19 @@ export class Player {
    * @returns Promise resolving to the player
    * @throws {Error} If player with given ID doesn't exist
    */
-  async get(id: string): Promise<PlayerType> {
-    const player = await getPlayer(id);
-    if (!player) {
+  static async get(id: string): Promise<Player> {
+    const playerData = await getPlayer(id);
+    if (!playerData) {
       throw new Error(`Player with id ${id} not found`);
     }
-    return player;
+    return new Player(playerData);
+  }
+
+  public getId() {  
+    return this.playerData.id;
+  }
+
+  public getName() {
+    return this.playerData.name;
   }
 }

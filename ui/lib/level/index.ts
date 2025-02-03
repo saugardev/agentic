@@ -6,13 +6,20 @@ import { createLevel, getLevel, getCurrentLevel } from './queries';
 import { validateDescription, validateAnswer } from './validations';
 
 export class Level {
+  private levelData: LevelType;
+
+  constructor(levelData: LevelType) {
+    this.levelData = levelData;
+  }
+
   /**
    * Creates a new level with the given description
    * Validates the description format before creation
    */
-  async create(gameId: string, description: string): Promise<LevelType> {
+  static async create(gameId: string, description: string): Promise<Level> {
     validateDescription(description);
-    return await createLevel(gameId, description);
+    const levelData = await createLevel(gameId, description);
+    return new Level(levelData);
   }
 
   /**
