@@ -43,6 +43,13 @@ export class Level {
   }
 
   /**
+   * Gets the description for the current level
+   */
+  getDescription(): string {
+    return this.levelData.description;
+  }
+
+  /**
    * Processes a player's answer submission for their current level
    * - Validates player exists and isn't dead
    * - Checks if answer meets level requirements
