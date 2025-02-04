@@ -1,6 +1,5 @@
-'use client';
-
 import { Game } from '@/types';
+import { handleResumeGame } from '@/lib/game/actions';
 
 export default function GamesTable({ games }: { games: Game[] }) {
   return (
@@ -25,9 +24,14 @@ export default function GamesTable({ games }: { games: Game[] }) {
             </td>
             <td className="border p-2">
               {game.status === 'alive' && (
-                <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
-                  Resume
-                </button>
+                <form action={async () => {
+                  'use server'
+                  await handleResumeGame(game.id);
+                }}>
+                  <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
+                    Resume
+                  </button>
+                </form>
               )}
             </td>
           </tr>

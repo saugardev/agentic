@@ -8,3 +8,7 @@ export async function handleCreateGame(playerId: string): Promise<Game> {
   console.log('Game created:', res.getGameId());
   redirect(`/game/${res.getGameId()}`);
 }
+
+export async function handleResumeGame(gameId: string) {
+  redirect(`/game/${gameId}`);
+}
