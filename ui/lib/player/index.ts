@@ -1,6 +1,7 @@
 import type { Player as PlayerType } from '@/types';
 import { createPlayer, getPlayer } from './queries';
 import { validateName } from './validations';
+import { getPlayerGamesWithPagination } from '../game/queries';
 
 /**
  * Manages player operations including creation and retrieval
@@ -45,5 +46,9 @@ export class Player {
 
   public getName() {
     return this.playerData.name;
+  }
+
+  public getGames(limit: number = 10, offset: number = 0) {
+    return getPlayerGamesWithPagination(this.getId(), limit, offset);
   }
 }
