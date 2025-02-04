@@ -1,7 +1,8 @@
+'use server'
+
 import { Game } from "@/lib/game";
 
 export async function handleCreateGame(playerId: string) {
-  'use server';
-  const game = await Game.create(playerId);
-  console.log(game);
+  const res: Game = await Game.create(playerId);
+  console.log('Game created:', res.getGameId());
 }
