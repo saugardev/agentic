@@ -12,7 +12,7 @@ export async function handleSubmitLevel(formData: FormData) {
         const game = await Game.create(player.getId(), gameId);
         const currentLevel = game.getCurrentLevel();
 
-        await currentLevel.submitAnswer(gameId, answer);
+        await currentLevel.submitAnswer(answer);
         revalidatePath(`/game/${gameId}`);
     } catch (error) {
         console.error("Error submitting answer:", error);

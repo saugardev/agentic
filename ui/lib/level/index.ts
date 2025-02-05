@@ -73,9 +73,9 @@ export class Level {
      *
      * @returns GameResponse with pass/fail status and reason
      */
-    async submitAnswer(gameId: string, answer: string): Promise<GameResponse> {
+    async submitAnswer(answer: string): Promise<GameResponse> {
         const game = await db.query.games.findFirst({
-            where: eq(games.id, gameId),
+            where: eq(games.id, this.levelData.gameId),
         });
 
         if (!game) {
@@ -110,13 +110,13 @@ export class Level {
                 currentLevel: evaluation.passed ? game.currentLevel + 1 : game.currentLevel,
                 endedAt: newStatus !== "alive" ? new Date() : undefined,
             })
-            .where(eq(games.id, gameId));
+            .where(eq(games.id, this.levelData.gameId));
 
         if (evaluation.passed) {
             // Create next level if available
             const nextLevelNumber = game.currentLevel + 1;
             if (nextLevelNumber <= LEVELS.length) {
-                await Level.create(gameId, LEVELS[nextLevelNumber - 1]);
+                await Level.create(this.levelData.gameId, LEVELS[nextLevelNumber - 1]);
             }
         }
         return evaluation;
