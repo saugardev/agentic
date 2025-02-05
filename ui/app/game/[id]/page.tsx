@@ -68,9 +68,9 @@ export default async function GamePage({ params }: GamePageProps) {
                 )}
 
                 {levelData.status === "dead" && (
-                    <div>
-                        <p>klkkkadkadsklasdklasdklaskdl</p>
-                        <p>{result}</p>
+                    <div className="mt-4 p-4 bg-red-100 rounded-lg">
+                        <h3 className="text-lg font-semibold text-red-700">Game Over</h3>
+                        <p className="text-red-600 mt-2">{lastInteraction?.reason}</p>
                     </div>
                 )}
             </div>

@@ -97,6 +97,7 @@ export class Level {
             levelId: level.id,
             playerAnswer: answer,
             result: evaluation.passed ? "passed" : "failed",
+            reason: evaluation.reason,
         });
 
         // Update game status
