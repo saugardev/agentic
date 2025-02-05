@@ -1,9 +1,11 @@
 'use client';
 
+import MenuButton from "./menu-button";
+
 export default function Auth() {
   return (
-    <button>
+    <MenuButton onClick={() => console.log('Login clicked')}>
       Login
-    </button>
+    </MenuButton>
   );
 }

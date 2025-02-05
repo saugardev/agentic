@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { LevelConfig } from '@/config/levels';
+import LevelOverlay from './level-overlay';
 
 interface ParallaxLevelProps {
   config: LevelConfig;
@@ -15,7 +16,7 @@ export default function ParallaxLevel({ config }: ParallaxLevelProps) {
     <div>
       <div 
         ref={containerRef}
-        className="relative h-screen w-full overflow-hidden rounded-lg"
+        className="relative h-screen w-full overflow-hidden"
         style={{ backgroundColor: config.backgroundColor }}
       >
         {config.assets.map((asset, index) => (
@@ -35,14 +36,17 @@ export default function ParallaxLevel({ config }: ParallaxLevelProps) {
             }}
           />
         ))}
-        <div className="absolute bottom-0 left-0 right-0 p-4 z-50 bg-background">
+        <div className="absolute bottom-0 left-0 right-0 z-50 h-44">
+          <LevelOverlay />
+        </div>
+        <div className="absolute bottom-4 left-0 right-0 z-[60] flex justify-center">
           <input 
             type="range" 
             min="0" 
             max="100" 
             value={progress}
             onChange={(e) => setProgress(Number(e.target.value))}
-            className="w-full"
+            className="w-1/2"
           />
         </div>
       </div>

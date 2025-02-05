@@ -3,9 +3,9 @@ import Auth from "./auth";
 
 export default function Navbar() {
   return (
-    <nav className="w-full border-b border-foreground/10 fixed z-50 bg-background">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="font-bold text-xl">
+    <nav className="w-full fixed z-50">
+      <div className="mx-auto h-16 p-5 flex items-center justify-between">
+        <Link href="/" className="font-bold text-4xl">
           App
         </Link>
         
