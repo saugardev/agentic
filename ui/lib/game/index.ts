@@ -1,5 +1,5 @@
 import { Player } from '@/lib/player';
-import { Level } from '@/lib/level';
+import { Level, LEVELS } from '@/lib/level';
 import { eq } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { games, levels } from '@/lib/db/schema';
@@ -29,7 +29,7 @@ export class Game {
     const levels = await Game.getLevelsForGame(gameData.id);
     
     if (!gameId && levels.length === 0) {
-      const firstLevel = await Level.create(gameData.id, "Welcome to level 1");
+      const firstLevel = await Level.create(gameData.id, LEVELS[0]);
       levels.push(firstLevel);
     }
 

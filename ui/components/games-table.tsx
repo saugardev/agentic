@@ -1,4 +1,4 @@
-import { Game } from '@/types';
+import { Game, PlayerStatus } from '@/types';
 import { handleResumeGame } from '@/lib/game/actions';
 
 export default function GamesTable({ games }: { games: Game[] }) {
@@ -18,7 +18,7 @@ export default function GamesTable({ games }: { games: Game[] }) {
           <tr key={game.id} className="hover:bg-gray-50">
             <td className="border p-2">{game.id}</td>
             <td className="border p-2">{game.currentLevel}</td>
-            <td className="border p-2">{game.status}</td>
+            <td className="border p-2">{getGameStatusString(game.status)}</td>
             <td className="border p-2">
               {new Date(game.startedAt).toLocaleString()}
             </td>
@@ -39,4 +39,12 @@ export default function GamesTable({ games }: { games: Game[] }) {
       </tbody>
     </table>
   );
-} 
+}
+
+function getGameStatusString(status: PlayerStatus) {
+  switch (status) {
+    case 'alive': return 'Alive 🤞';
+    case 'dead': return 'Dead 💀';
+    case 'completed': return 'Winner 🏆';
+  }
+}

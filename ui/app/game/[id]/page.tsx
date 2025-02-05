@@ -1,57 +1,79 @@
 import { Game } from "@/lib/game";
 import { Player } from "@/lib/player";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { GameResponse } from "@/types";
+import { Level, LEVELS } from "@/lib/level";
+import { handleSubmitLevel } from "@/lib/level/actions";
 
 interface GamePageProps {
-  params: {
-    id: string;
-  };
+    params: {
+        id: string;
+    };
 }
 
 export default async function GamePage({ params }: GamePageProps) {
-  const player = await Player.create('saugardev');
-  const playerId = player.getId();
+    const { id } = await params;
 
-  let game;
-  try {
-    game = await Game.create(playerId, params.id);
-  } catch (error) {
-    console.error('Error creating game:', error);
-    notFound();
-  }
+    const player = await Player.create("saugardev");
+    const playerId = player.getId();
 
-  const currentLevel = game.getCurrentLevel();
+    let game: Game;
+    try {
+        game = await Game.create(playerId, id);
+    } catch (error) {
+        console.error("Error creating game:", error);
+        notFound();
+    }
 
-  console.log(currentLevel);
-  return (
-    <div className="container mx-auto p-4">
-      <div className="mb-4">
-        <h1 className="text-2xl font-bold">Game #{game.getGameId()}</h1>
-        <p className="text-gray-600">Status: {game.getGameStatus()}</p>
-      </div>
+    const currentLevel = game.getCurrentLevel();
+    const levelData = {
+        description: currentLevel.getDescription(),
+        id: game.getGameId(),
+        status: game.getGameStatus(),
+        currentLevelId: game.getCurrentLevelId(),
+    };
 
-      <div className="bg-gray-100 rounded-lg p-6">
-        <div className="mb-4">
-          <h2 className="text-xl font-semibold">Level {game.getCurrentLevelId()}</h2>
-          <p className="mt-2">{currentLevel.getDescription()}</p>
+    const lastInteraction = await currentLevel.getLastInteraction();
+
+    const result = lastInteraction?.result;
+
+    return (
+        <div className="container mx-auto p-4">
+            <div className="mb-4">
+                <h1 className="text-2xl font-bold">Game #{levelData.id}</h1>
+                <p className="text-gray-600">Status: {levelData.status}</p>
+            </div>
+
+            <div className="bg-gray-100 rounded-lg p-6">
+                <div className="mb-4">
+                    <h2 className="text-xl font-semibold">Level {levelData.currentLevelId}</h2>
+                    <p className="mt-2">{levelData.description}</p>
+                </div>
+
+                {levelData.status === "alive" && (
+                    <form
+                        action={async (formData: FormData) => {
+                            "use server";
+
+                            await handleSubmitLevel(formData);
+                        }}
+                        className="space-y-4"
+                    >
+                        <input type="hidden" name="gameId" value={levelData.id} />
+                        <textarea name="answer" className="w-full p-2 border rounded-md" rows={4} placeholder="Enter your answer..." required />
+                        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            Submit Answer
+                        </button>
+                    </form>
+                )}
+
+                {levelData.status === "dead" && (
+                    <div>
+                        <p>klkkkadkadsklasdklasdklaskdl</p>
+                        <p>{result}</p>
+                    </div>
+                )}
+            </div>
         </div>
-
-        {game.getGameStatus() === 'alive' && (
-          <form className="space-y-4">
-            <textarea 
-              className="w-full p-2 border rounded-md"
-              rows={4}
-              placeholder="Enter your answer..."
-            />
-            <button 
-              type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Submit Answer
-            </button>
-          </form>
-        )}
-      </div>
-    </div>
-  );
+    );
 }
