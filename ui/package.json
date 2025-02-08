@@ -11,6 +11,7 @@
     "db:migrate": "drizzle-kit push"
   },
   "dependencies": {
+    "@privy-io/react-auth": "^2.4.2",
     "@privy-io/server-auth": "^1.18.4",
     "dotenv": "^16.4.7",
     "drizzle-kit": "^0.30.4",
