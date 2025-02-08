@@ -12,11 +12,11 @@ export default function LevelOverlay() {
         </div>
         
         <div className="flex flex-col gap-5 pointer-events-auto items-center justify-center h-full">
-          <MenuButton onClick={() => console.log('Settings clicked')}>
+          <MenuButton>
             Settings
           </MenuButton>
           
-          <MenuButton onClick={() => console.log('Exit clicked')}>
+          <MenuButton>
             Exit
           </MenuButton>
         </div>

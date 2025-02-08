@@ -1,4 +1,5 @@
 import { handleCreateGame } from '@/lib/game/actions';
+import MenuButton from './menu-button';
 
 interface CreateGameFormProps {
   playerId: string;
@@ -10,8 +11,10 @@ export default function CreateGameForm({ playerId }: CreateGameFormProps) {
       'use server';
       await handleCreateGame(playerId);
     }}>
-      <button type="submit" className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">
-        Create New Game
+      <button type="submit">
+        <MenuButton>
+          New Game
+        </MenuButton>
       </button>
     </form>
   );
