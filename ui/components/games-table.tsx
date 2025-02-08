@@ -18,8 +18,8 @@ export default function GamesTable({ games, playerId }: { games: Game[], playerI
           <tbody className="divide-y divide-gray-200/30">
             {games.map((game) => (
               <tr key={game.id} className="hover:bg-white/5 transition-colors">
-                <td className="px-6 py-4 whitespace-nowrap text-lg text-white text-center">{game.currentLevel}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-lg text-center">
+                <td className="px-6 py-4 whitespace-nowrap text-lg text-white text-center h-24">{game.currentLevel}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-lg text-center h-24">
                   <span className={`inline-flex items-center rounded px-2.5 py-0.5 text-lg font-medium
                     ${game.status === 'alive' ? 'bg-green-700 text-green-200' : ''}
                     ${game.status === 'dead' ? 'bg-red-700 text-red-200' : ''}
@@ -28,7 +28,7 @@ export default function GamesTable({ games, playerId }: { games: Game[], playerI
                     {getGameStatusString(game.status)}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-lg text-center flex justify-center items-center">
+                <td className="px-6 py-4 whitespace-nowrap text-lg text-center h-24 flex justify-center items-center">
                   {game.status === 'alive' && (
                     <form action={async () => {
                       'use server'
