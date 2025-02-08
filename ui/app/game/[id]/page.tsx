@@ -1,9 +1,8 @@
 import { Game } from "@/lib/game";
 import { Player } from "@/lib/player";
 import { notFound, redirect } from "next/navigation";
-import { GameResponse } from "@/types";
-import { Level, LEVELS } from "@/lib/level";
 import { handleSubmitLevel } from "@/lib/level/actions";
+import { getUserAddress } from "@/lib/auth/actions";
 
 interface GamePageProps {
     params: {
@@ -14,7 +13,13 @@ interface GamePageProps {
 export default async function GamePage({ params }: GamePageProps) {
     const { id } = await params;
 
-    const player = await Player.create("saugardev");
+    const address = await getUserAddress();
+
+    if (!address) {
+        redirect("/");
+    }
+
+    const player = await Player.create(address);
     const playerId = player.getId();
 
     let game: Game;
@@ -34,8 +39,6 @@ export default async function GamePage({ params }: GamePageProps) {
     };
 
     const lastInteraction = await currentLevel.getLastInteraction();
-
-    const result = lastInteraction?.result;
 
     return (
         <div className="container mx-auto p-4">

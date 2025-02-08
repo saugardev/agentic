@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --font-newdos: '';
+  }
+  
+  .font-newdos {
+    font-family: var(--font-newdos);
+  }
+}

@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${newDos.variable} antialiased`}>
+      <body className={`${newDos.variable} font-newdos antialiased`}>
         <Providers>
           <Navbar />
           {children}
