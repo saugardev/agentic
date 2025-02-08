@@ -35,7 +35,7 @@ export default function GamesTable({ games, playerId }: { games: Game[], playerI
                       await handleResumeGame(game.id);
                     }}>
                       <MenuButton>
-                        Resume
+                        <button>Resume</button>
                       </MenuButton>
                     </form>
                   )}
