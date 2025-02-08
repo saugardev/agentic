@@ -28,7 +28,7 @@ export default function GamesTable({ games, playerId }: { games: Game[], playerI
                     {getGameStatusString(game.status)}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-lg text-center">
+                <td className="px-6 py-4 whitespace-nowrap text-lg text-center flex justify-center items-center">
                   {game.status === 'alive' && (
                     <form action={async () => {
                       'use server'
