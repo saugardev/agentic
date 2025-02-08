@@ -2,14 +2,12 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { LevelConfig } from '@/config/levels';
-import LevelOverlay from './level-overlay';
 
 interface ParallaxLevelProps {
   config: LevelConfig;
-  overlay: boolean;
 }
 
-export default function ParallaxLevel({ config, overlay }: ParallaxLevelProps) {
+export default function ParallaxLevel({ config }: ParallaxLevelProps) {
   const [progress, setProgress] = useState(0);
   const [direction, setDirection] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,11 +48,6 @@ export default function ParallaxLevel({ config, overlay }: ParallaxLevelProps) {
             }}
           />
         ))}
-        {overlay && (
-          <div className="absolute bottom-0 left-0 right-0 z-10 h-44">
-            <LevelOverlay />
-          </div>
-        )}
       </div>
     </div>
   );

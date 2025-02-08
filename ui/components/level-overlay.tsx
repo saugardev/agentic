@@ -7,15 +7,7 @@ export default function LevelOverlay() {
       style={{ backgroundImage: "url('/menus/background.png')" }}
     >
       <div className="flex justify-between items-start">
-        <div className="text-white text-4xl font-bold">
-          Level 1
-        </div>
-        
         <div className="flex flex-col gap-5 pointer-events-auto items-center justify-center h-full">
-          <MenuButton>
-            Settings
-          </MenuButton>
-          
           <MenuButton>
             Exit
           </MenuButton>

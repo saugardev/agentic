@@ -12,3 +12,7 @@ export async function handleCreateGame(playerId: string): Promise<Game> {
 export async function handleResumeGame(gameId: string) {
   redirect(`/game/${gameId}`);
 }
+
+export async function returnHome() {
+  redirect("/");
+}
