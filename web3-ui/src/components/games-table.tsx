@@ -6,10 +6,12 @@ import { useGames } from "@/hooks/useGames";
 import CreateGameForm from "./create-game";
 import { useState, useEffect } from "react";
 import { Address } from "viem";
+import { useRouter } from "next/navigation";
 
 export default function GamesTable() {
     const account = useAccount();
     const { data: gamesData, isLoading, refetch } = useGames(account.address as Address);
+    const router = useRouter();
 
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 5;
@@ -59,7 +61,9 @@ export default function GamesTable() {
                                         <td className="px-2 py-2 whitespace-nowrap text-lg text-white text-center">{Number(game.currentLevel)}</td>
                                         <td className="px-2 py-2 whitespace-nowrap text-lg text-center">
                                             <div className="flex items-center justify-center">
-                                                <MenuButton>Resume</MenuButton>
+                                                <div onClick={() => router.push(`/game/${game.id}`)}>
+                                                    <MenuButton>Resume</MenuButton>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>

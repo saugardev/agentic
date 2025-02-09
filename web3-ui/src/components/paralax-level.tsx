@@ -20,7 +20,6 @@ export default function ParallaxLevel({ config }: ParallaxLevelProps) {
         return prev + direction * 0.1;
       });
     }, 120);
-
     return () => clearInterval(interval);
   }, [direction]);
 

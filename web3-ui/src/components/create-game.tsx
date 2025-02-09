@@ -1,6 +1,6 @@
 "use client";
 
-import { useWriteContract, useAccount } from "wagmi";
+import { useWriteContract } from "wagmi";
 import MenuButton from "./menu-button";
 import { CONTRACT_ADDRESS } from "@/config";
 import { useEffect } from "react";
@@ -22,8 +22,7 @@ const FantasyGameMasterABI = [
 ] as const;
 
 export default function CreateGameForm({ onSuccess }: { onSuccess?: () => void }) {
-    const { address } = useAccount();
-    const { writeContract, isPending, isSuccess, error, reset } = useWriteContract();
+    const { writeContract, isPending, isSuccess, reset } = useWriteContract();
 
     const handleCreateGame = () => {
         writeContract({
