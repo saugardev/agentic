@@ -1,16 +1,18 @@
-'use client'
+"use client";
 
 import ParallaxLevel from "@/components/paralax-level";
 import { levels } from "@/config/levels";
 import GamesTable from "@/components/games-table";
 
 export default function Home() {
-  return (
-    <div>
-      <ParallaxLevel config={levels[0]} />
-      <div className="absolute top-1/3 left-0 right-0 -translate-y-1/2 z-20 w-1/2 mx-auto">
-        <GamesTable />
-      </div>
-    </div>
-  );
+    return (
+        <div className="relative h-screen bg-gray-100">
+            <ParallaxLevel config={levels[0]} />
+            <div className="absolute inset-0 flex items-center justify-center z-20">
+                <div className="w-1/2 mx-auto">
+                    <GamesTable />
+                </div>
+            </div>
+        </div>
+    );
 }

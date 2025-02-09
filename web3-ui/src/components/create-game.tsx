@@ -1,40 +1,50 @@
-'use client'
+"use client";
 
-import { useWriteContract } from 'wagmi';
-import MenuButton from './menu-button';
+import { useWriteContract, useAccount } from "wagmi";
+import MenuButton from "./menu-button";
+import { CONTRACT_ADDRESS } from "@/config";
+import { useEffect } from "react";
 
 const FantasyGameMasterABI = [
-  {
-    inputs: [],
-    name: "createGame", 
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
+    {
+        inputs: [],
+        name: "createGame",
+        outputs: [
+            {
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
+        ],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
 ] as const;
 
-export default function CreateGameForm() {
-  const { writeContract } = useWriteContract();
+export default function CreateGameForm({ onSuccess }: { onSuccess?: () => void }) {
+    const { address } = useAccount();
+    const { writeContract, isPending, isSuccess, error, reset } = useWriteContract();
 
-  const handleCreateGame = () => {
-    writeContract({
-      address: '0x36BF36ccA843bEC4FA0cB0411F92bEe74a9350FC',
-      abi: FantasyGameMasterABI,
-      functionName: 'createGame',
-    });
-  };
+    const handleCreateGame = () => {
+        writeContract({
+            address: CONTRACT_ADDRESS,
+            abi: FantasyGameMasterABI,
+            functionName: "createGame",
+        });
+    };
 
-  return (
-    <div onClick={handleCreateGame}>
-      <MenuButton>
-        New Game
-      </MenuButton>
-    </div>
-  );
+    useEffect(() => {
+        if (isSuccess && onSuccess) {
+            onSuccess();
+            reset();
+        }
+    }, [isSuccess, onSuccess, reset]);
+
+    return (
+        <div style={{ overflow: "hidden" }}>
+            <div onClick={!isPending ? handleCreateGame : undefined} className={isPending ? "opacity-50 cursor-not-allowed" : ""}>
+                <MenuButton>{isPending ? "Creating..." : "New Game"}</MenuButton>
+            </div>
+        </div>
+    );
 }

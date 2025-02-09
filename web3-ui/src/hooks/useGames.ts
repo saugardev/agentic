@@ -1,52 +1,46 @@
-import { useReadContract } from 'wagmi'
+import { CONTRACT_ADDRESS } from "@/config";
+import { useReadContract } from "wagmi";
 
 const abi = [
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "player",
-        "type": "address"
-      }
-    ],
-    "name": "getPlayerGames",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "currentLevel",
-            "type": "uint256"
-          },
-          {
-            "internalType": "enum GameStatus",
-            "name": "status",
-            "type": "uint8"
-          }
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "_player",
+                type: "address",
+            },
         ],
-        "internalType": "struct Game[]",
-        "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  }
-] as const
+        name: "getPlayerGames",
+        outputs: [
+            {
+                internalType: "uint256[]",
+                name: "gameIds",
+                type: "uint256[]",
+            },
+            {
+                internalType: "bool[]",
+                name: "isActive",
+                type: "bool[]",
+            },
+            {
+                internalType: "uint256[]",
+                name: "levelsAssigned",
+                type: "uint256[]",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+] as const;
 
 export function useGames(address: `0x${string}`) {
-  return useReadContract({
-    address: '0x36BF36ccA843bEC4FA0cB0411F92bEe74a9350FC',
-    abi,
-    functionName: 'getPlayerGames',
-    args: [address],
-    query: {
-      enabled: !!address
-    }
-  })
-} 
+    return useReadContract({
+        address: CONTRACT_ADDRESS,
+        abi,
+        functionName: "getPlayerGames",
+        args: [address],
+        query: {
+            enabled: !!address,
+        },
+    });
+}
