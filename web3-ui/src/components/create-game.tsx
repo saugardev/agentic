@@ -1,3 +1,5 @@
+'use client'
+
 import { useWriteContract } from 'wagmi';
 import MenuButton from './menu-button';
 

@@ -7,14 +7,8 @@ import CreateGameForm from './create-game';
 
 export default function GamesTable() {
   const { address } = useAccount()
-  if (!address) return (
-    <div className="overflow-x-auto w-full z-50">
-      <div className="absolute top-1/3 left-0 right-0 -translate-y-1/2 z-20 w-1/2 mx-auto bg-[#151414] p-4 text-white border-4 border-[#594C29] mx-10">
-        <h1 className="text-center text-2xl">Please login to continue</h1>
-      </div>
-    </div>
-  )
-  const { data: games, isLoading } = useGames(address)
+
+  const { data: games, isLoading } = useGames(address as any)
 
   if (isLoading) return <div>Loading...</div>
   if (!games) return null

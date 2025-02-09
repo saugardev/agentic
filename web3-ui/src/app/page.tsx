@@ -1,8 +1,10 @@
+'use client'
+
 import ParallaxLevel from "@/components/paralax-level";
 import { levels } from "@/config/levels";
 import GamesTable from "@/components/games-table";
 
-export default async function Home() {
+export default function Home() {
   return (
     <div>
       <ParallaxLevel config={levels[0]} />
