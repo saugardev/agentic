@@ -28,7 +28,7 @@ export default function Navbar() {
     <nav className="w-full fixed z-50">
       <div className="mx-auto h-16 p-5 flex items-center justify-between">
         <Link href="/" className="font-bold text-4xl">
-          App
+          Master of Fantasy
         </Link>
         
         <div className="flex items-center gap-4">
