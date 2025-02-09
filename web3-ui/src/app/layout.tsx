@@ -12,8 +12,8 @@ const newDos = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "AppKit in Next.js + wagmi",
-  description: "AppKit example dApp",
+  title: "Master of Fantasy",
+  description: "Master of Fantasy",
 };
 
 export default async function RootLayout({
