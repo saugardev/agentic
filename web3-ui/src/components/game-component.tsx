@@ -1,12 +1,34 @@
 'use client';
 
-import { useAccount } from "wagmi";
+import { useAccount, useWriteContract } from "wagmi";
 import { useGames } from "@/hooks/useGames";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Address } from "viem";
 import ParallaxLevel from "@/components/paralax-level";
 import { levels } from "@/config/levels";
+import { CONTRACT_ADDRESS } from "@/config";
+
+const FantasyGameMasterABI = [
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_gameId",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "_action",
+        type: "string",
+      },
+    ],
+    name: "createInteraction",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+] as const;
 
 export default function GameComponent({params}: {params: {id: string}}) {
   const router = useRouter();
@@ -14,6 +36,7 @@ export default function GameComponent({params}: {params: {id: string}}) {
   const gameId = Number(params.id);
   const { data: gamesData, isLoading } = useGames(account.address as Address);
   const [description, setDescription] = useState<string>("");
+  const { writeContract } = useWriteContract();
 
   useEffect(() => {
     const fetchDescription = async () => {
@@ -45,6 +68,24 @@ export default function GameComponent({params}: {params: {id: string}}) {
     }
   }, [gamesData, gameId, router, account.address]);
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const answer = (form.elements.namedItem('answer') as HTMLTextAreaElement).value;
+
+    try {
+      await writeContract({
+        address: CONTRACT_ADDRESS,
+        abi: FantasyGameMasterABI,
+        functionName: 'createInteraction',
+        args: [BigInt(gameId), answer],
+      });
+      form.reset();
+    } catch (error) {
+      console.error('Failed to submit answer:', error);
+    }
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (!gamesData) return null;
 
@@ -55,7 +96,7 @@ export default function GameComponent({params}: {params: {id: string}}) {
         <div className="w-1/2 mx-auto bg-[#151414] p-4 text-white border-4 border-[#594C29]">
           <p className="text-2xl mb-4">Game {gameId}</p>
           <p className="text-lg mb-4">Description: {description}</p>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <textarea 
               name="answer" 
               className="w-full p-2 bg-[#151414] border-2 border-[#594C29] text-white text-lg focus:outline-none focus:border-[#8B7355] focus:ring-1 focus:ring-[#8B7355] transition-colors resize-none" 
